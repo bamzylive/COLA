@@ -1,0 +1,204 @@
+/*
+ test poly_div
+*/
+int16_t a[N],b[N],q[N],r[N];
+memset(a, 0, N * sizeof(int16_t));
+memset(b, 0, N * sizeof(int16_t));
+a[4] = 1; a[3] = -3; a[2] = 2; a[1] = 4; a[0] = -1;
+b[2] = 1; b[1] = -2; b[0] = 3;
+uint16_t a_deg = 4;
+uint16_t b_deg = 2;
+
+
+poly_div(5,a,b,q,r,a_deg,b_deg);
+display(q);
+display(r);
+
+/*
+ test textbook_mul and karatsuba_mul
+ */
+
+ clock_t start,finish;
+ double total_time;
+ int16_t a[N],b[N],c[N],t[N];
+ memset(a, 0, N * sizeof(int16_t));
+ memset(b, 0, N * sizeof(int16_t));
+ memset(c, 0, N * sizeof(int16_t));
+ memset(t, 0, N * sizeof(int16_t));
+
+ srand(time(0));
+ gen_rand_poly(a,50,100);
+ gen_rand_poly(b,50,100);
+
+ display(a);
+ display(b);
+
+ start=clock();
+ karatsuba(a,b,c);
+ finish=clock();
+
+ total_time=(double)(finish-start)/CLOCKS_PER_SEC;
+ printf("poly_mul time of karatsuba_mul   :%f us\n", (total_time*1000000) );
+
+ display(c);
+
+ start=clock();
+ textbook_mul(a,b,t);
+ finish=clock();
+ total_time=(double)(finish-start)/CLOCKS_PER_SEC;
+ printf("poly_mul time  of textbook_mul  :%f us\n", (total_time*1000000) );
+
+ display(t);
+ 
+ 
+ /* test poly_EEA */
+     int16_t a[N],b[N],s[N],t[N],d[N];
+    memset(a,0,N*sizeof(int16_t));
+    memset(b,0,N*sizeof(int16_t));
+    a[0] = 5; a[1] = 1; a[2] = 2; a[6] = 3;
+    b[0] = 4; b[1] = 2; b[3] = 1; b[4] = 6;
+    printf("compute the gcd of \n");
+    display(a);
+    printf("and\n");
+    display(b);
+    poly_EEA(a,b,s,t,d,7);
+    printf("s is \n");
+    display(s);
+    printf("t is \n");
+    display(t);
+    printf("gcd is\n");
+    display(d);
+    
+    
+/* test bin_poly_div */
+    int16_t a[N], b[N], q[N], r[N];
+    memset(a, 0, sizeof(int16_t)*N);
+    memset(b, 0, sizeof(int16_t)*N);
+    a[7] = a[5] = a[2] = a[1] = a[0] = b[3] = b[1] = b[0] = 1;
+    bin_poly_div(a, b, q, r, 7, 3);
+    display(q);
+    display(r);
+
+/* 
+
+    {f, g} = {x^3 + x^2 + 1, x^8 + 1};
+    {d, {a, b}} = PolynomialExtendedGCD[f, g, x, Modulus -> 2]
+    {1, {1 + x^3 + x^5 + x^6 + x^7, x^2}}
+
+    s is
+    [  1  0  0  1  0  1  1  1  ] of degree 7
+    t is
+    [  0  0  1  ] of degree 2
+    gcd is
+    [  1  ] of degree 0
+ */
+        int16_t a[N], b[N], q[N], r[N];
+    memset(a, 0, sizeof(int16_t)*N);
+    a[2] = 1;
+    printf("find the inv of \n");
+    display(a);
+    
+    printf("the result of computing inverse is \n");
+
+    if(quotient_ring_inv(b,a,2,3)) display(b);
+    else printf("not invertible");
+
+    int16_t a[N], b[N], s[N], t[N],d[N];
+    memset(a, 0, sizeof(int16_t)*N);
+    memset(b, 0, sizeof(int16_t)*N);
+
+    a[3] = a[2] = a[0] = 1;
+    b[8] = b[0] =1; 
+    
+    poly_EEA(a,b,s,t,d,2);
+
+    printf("s is\n");
+    display(s);
+
+    printf("t is\n");
+    display(t);
+
+    printf("gcd is\n");
+    display(d);
+
+
+    =================
+        a[4] = 1; a[3] = 3; a[1] = 2; a[0] = 4; 
+    //a[3] = a[2] = a[0] = 1;
+
+    b[2] = 1;  b[0] = -1;
+
+    {f, g} = {x^4 + 3 x^3 + 2 x + 4, x^2 - 1};
+    {d, {a, b}} = PolynomialExtendedGCD[f, g, x, Modulus -> 7]
+    {1 + x, {3, 4 + 5 x + 4 x^2}}
+    ModularInverse[5, 7] = 3
+    s is
+[  1  ] of degree 0
+t is
+[  6  4  6  ] of degree 2
+gcd is
+[  5  5  ] of degree 1
+
+
+===========================
+test quotient_ring_inv
+
+    int16_t a[N], b[N], s[N], t[N],d[N];
+    memset(a, 0, sizeof(int16_t)*N);
+    memset(b, 0, sizeof(int16_t)*N);
+    int16_t p = 2;
+
+    //a[4] = 1; a[3] = 3; a[1] = 2; a[0] = 4; 
+    a[3] = a[2] = a[0] = 1;
+
+    //b[2] = 1;  b[0] = -1;
+    
+    display(a);
+    quotient_ring_inv(b,a,p,8);
+    printf("Its inverse is\n");
+    display(b);
+
+===================================
+test cyc_convolution
+(1 + 2x + 3x^2)*(3 + 2x + x^2) in Z[X] / x^3 -1
+is 
+11 + 11x + 14x^2
+
+
+int16_t a[N],b[N],c[N];
+    memset(a,0,sizeof(int16_t)*N);
+    memset(b,0,sizeof(int16_t)*N);
+    for(int16_t i=1; i<=3; i++){
+        a[i-1] = i;
+        b[i-1] = 4 - i;
+    }
+    printf("a is\n");
+    display(a);
+    printf("b is\n");
+    display(b);
+    printf("c is\n");
+    cyc_convolution(c,a,b,3);
+    display(c);
+
+a is
+[  1  2  3  ] of degree 2
+b is
+[  3  2  1  ] of degree 2
+c is
+[  11  11  14  ] of degree 2
+
+/* test bytes */
+    int16_t h[N];
+    memset(h, 0, N*sizeof(int16_t));
+    gen_rand_poly(h, 20, 1000);
+    display(h);
+    unsigned char s[BYTESLEN];
+    //printf("start\n");
+    poly2bytes(s, h);
+    //displaybits(s);
+    memset(h, 0, N*sizeof(int16_t));
+    bytes2poly(h, s);
+    display(h);
+    //displaybits(s);
+    //printf("\n");
+    //display10bits(h);
