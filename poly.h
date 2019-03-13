@@ -105,7 +105,8 @@ void cyc_convolution(
 int lift_power2_inv(
     int16_t *b,
     int16_t *a,
-    int16_t n
+    int16_t n,
+    int16_t r
 );
 
 #endif /* poly_h */
