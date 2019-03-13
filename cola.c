@@ -25,7 +25,7 @@ void cola_keygen(
         g[i] += Q>>1 ;
     }
     int cnt = 20;
-    while(!lift_power2_inv(f_inv,f,N_DEG) && cnt--){
+    while(!lift_power2_inv(f_inv,f,N_DEG,10) && cnt--){
         trinary_poly_gen(f,TRI_d);
     }
     cyc_convolution(h, f_inv, g, N_DEG);
@@ -111,6 +111,7 @@ int main(){
     int16_t a[N], b[N], s[N], t[N],d[N];
     memset(a, 0, sizeof(int16_t)*N);
     memset(b, 0, sizeof(int16_t)*N);
+    memset(d, 0, sizeof(int16_t)*N);
     int16_t p = 2;
 
     //a[4] = 1; a[3] = 3; a[1] = 2; a[0] = 4; 
@@ -122,4 +123,13 @@ int main(){
     quotient_ring_inv(b,a,p,7);
     printf("Its inverse is\n");
     display(b);
+
+    lift_power2_inv(b, a, 7, 2);
+    printf("lifted as\n");
+    display(b);
+
+    printf("the product is\n");
+    cyc_convolution(d,b,a,7);
+    entrywise_mod_p(d, 1<<2);
+    display(d);
 }

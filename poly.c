@@ -595,13 +595,13 @@ void cyc_convolution(
 int lift_power2_inv(
     int16_t *b,
     int16_t *a,
-    int16_t n
+    int16_t n,
+    int16_t r
 )
 {
     int i, j, flag;
-    int16_t modulus = 1;
-    int16_t temp[N];
-    memset(temp, 0 , sizeof(int16_t)*N);
+    int16_t index = 1, modulus = 2;
+    int16_t temp1[N], temp2[N];
 
     flag = quotient_ring_inv(b,a,2,n);
     if(flag == 0){
@@ -609,16 +609,25 @@ int lift_power2_inv(
         return 0;
     }
     
-    for(i = 1; i <= 4; i++){
-        modulus *= 2;
-        cyc_convolution(temp,b,b,N_DEG);
-        entrywise_mod_p(temp,modulus);
-        cyc_convolution(temp,temp,a,N_DEG);
-        entrywise_mod_p(temp,modulus);
-        for( j=0 ; j < N; j++){
-             b[i] = b[i] * 2 - temp[i] ;         
+    while (index < r) {
+        index *= 2;
+        printf("current index: %d\n", index);
+        modulus = modulus*modulus;
+        printf("current modulus: %d\n", modulus);
+        cyc_convolution(temp1, b, b, n);
+        display(temp1);
+        entrywise_mod_p(temp1, modulus);
+        cyc_convolution(temp2, temp1, a, n);
+        entrywise_mod_p(temp2, modulus);
+        for(i = 0 ; i < N; i++){
+             b[i] = b[i] * 2 - temp2[i] ;         
         }
+        entrywise_mod_p(b, modulus);
     }
+    modulus = 1;
+    for (i = 0; i < r; i++) modulus *= 2;
+    printf("final modulus: %d\n", modulus);
+    entrywise_mod_p(b, modulus);
     return 1;
 }
 
