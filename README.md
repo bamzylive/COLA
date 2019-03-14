@@ -1,3 +1,3 @@
 # COLA
-make simple
-./test
+# make simple
+# ./test
