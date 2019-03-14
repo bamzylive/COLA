@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include "params.h"
 
-void poly2bytes(unsigned char *b, const int16_t * f) {
+void poly2bytes(unsigned char *b, const int64_t * f) {
     memset(b, 0, BYTESLEN);
-    int16_t spacebias = 0, spaceleft = 8, inputleft, copylen;
+    int64_t spacebias = 0, spaceleft = 8, inputleft, copylen;
     for (int i = 0, j = 0; i < N; i++) {
         //printf("copying the no.%d integer\n", i);
         inputleft = 10;
@@ -25,15 +25,15 @@ void poly2bytes(unsigned char *b, const int16_t * f) {
     }
 }
 
-void printbits(int16_t l, int16_t c) {
+void printbits(int64_t l, int64_t c) {
     for (int j = 0; j < l; j++)
-        printf("%d", (c&(1<<j)) >> j);
+        printf("%lld", (c&(1<<j)) >> j);
     printf("  ");
 }
 
-void bytes2poly(int16_t *f, const unsigned char *b) {
-    memset(f, 0, N*sizeof(int16_t));
-    int16_t spacebias = 0, spaceleft = 10, inputleft, copylen;
+void bytes2poly(int64_t *f, const unsigned char *b) {
+    memset(f, 0, N*sizeof(int64_t));
+    int64_t spacebias = 0, spaceleft = 10, inputleft, copylen;
     for (int i = 0, j = 0; i < BYTESLEN; i++) {
         //printf("\ncopying the no.%d byte\n", i);
         inputleft = 8;
@@ -66,10 +66,10 @@ void displaybits(unsigned char *b) {
     printf("\n");
 }
 
-void display10bits(int16_t *f) {
+void display10bits(int64_t *f) {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < 10; j++)
-            printf("%d", (f[i]&(1<<j)) >> j);
+            printf("%lld", (f[i]&(1<<j)) >> j);
         printf("  ");
     }
     printf("\n");

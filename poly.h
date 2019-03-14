@@ -6,31 +6,31 @@
 
 
 void
-binary_poly_gen(int16_t  *f);
+binary_poly_gen(int64_t  *f);
 
 /*
   T(d+1,d)
 */
 void
 trinary_poly_gen(
-          int16_t  *f,
-    const uint16_t  d);
+          int64_t  *f,
+    const uint64_t  d);
 
-void gen_rand_poly(int16_t *f,int16_t f_deg, int16_t num);
+void gen_rand_poly(int64_t *f,int64_t f_deg, int64_t num);
 
-int16_t dg(const int16_t  *f);
+int64_t dg(const int64_t  *f);
 
-int16_t display(const int16_t  *f);
+int64_t display(const int64_t  *f);
 
-void poly_assign(int16_t *y, int16_t *x);
+void poly_assign(int64_t *y, int64_t *x);
 
-int16_t  EEA(
-  int16_t a,
-  int16_t b,
-  int16_t* ps,
-  int16_t* pt);
+int64_t  EEA(
+  int64_t a,
+  int64_t b,
+  int64_t* ps,
+  int64_t* pt);
 
-int16_t num_inv(int16_t lc, int16_t p);
+int64_t num_inv(int64_t lc, int64_t p);
 
 /*
   input: a,b, degree of a, degree of b, q and r, here q and r
@@ -38,53 +38,53 @@ int16_t num_inv(int16_t lc, int16_t p);
   output: q, r such that a = qb + r
 */
 void poly_div(
-    int16_t p,
-   const int16_t  *a,
-   const int16_t  *b,
-   int16_t  *q,
-   int16_t  *r,
-   int16_t a_deg,
-   int16_t b_deg
+    int64_t p,
+   const int64_t  *a,
+   const int64_t  *b,
+   int64_t  *q,
+   int64_t  *r,
+   int64_t a_deg,
+   int64_t b_deg
 );
 
 void bin_poly_div(
-   const int16_t  *a,
-   const int16_t  *b,
-   int16_t  *q,
-   int16_t  *r,
-   int16_t a_deg,
-   int16_t b_deg
+   const int64_t  *a,
+   const int64_t  *b,
+   int64_t  *q,
+   int64_t  *r,
+   int64_t a_deg,
+   int64_t b_deg
 );
 
 /*
   textbook mul over Z
 */
 void textbook_mul(
-    int16_t *a,
-    int16_t *b,
-    int16_t *c
+    int64_t *a,
+    int64_t *b,
+    int64_t *c
 );
 
 /*
   karatsuba mul over Z
 */
 void karatsuba(
-    int16_t *a,
-    int16_t *b,
-    int16_t *c
+    int64_t *a,
+    int64_t *b,
+    int64_t *c
 );
 
-void poly_minus(int16_t* c,int16_t *a, int16_t*b);
-void entrywise_mod_p(int16_t* c, int16_t p);
-void central_mod_p(int16_t* c, int16_t p);
+void poly_minus(int64_t* c,int64_t *a, int64_t*b);
+void entrywise_mod_p(int64_t* c, int64_t p);
+void central_mod_p(int64_t* c, int64_t p);
 
 void poly_EEA(
-  int16_t  *a,
-  int16_t  *b,
-  int16_t  *olds,
-  int16_t  *oldt,
-  int16_t  *oldr,
-  int16_t p
+  int64_t  *a,
+  int64_t  *b,
+  int64_t  *olds,
+  int64_t  *oldt,
+  int64_t  *oldr,
+  int64_t p
 );
 
 /*
@@ -94,19 +94,19 @@ void poly_EEA(
  *    output: 1: a_inv s.t a * a_inv = 1 in Rp
  *            0: not invertible  
  */
-int quotient_ring_inv(int16_t * a_inv, int16_t *a, int16_t p, int16_t n);
+int quotient_ring_inv(int64_t * a_inv, int64_t *a, int64_t p, int64_t n);
 
 void cyc_convolution(
-    int16_t *c, 
-    const int16_t *a, 
-    const int16_t *b,
-    int16_t n);
+    int64_t *c, 
+    const int64_t *a, 
+    const int64_t *b,
+    int64_t n);
 
 int lift_power2_inv(
-    int16_t *b,
-    int16_t *a,
-    int16_t n,
-    int16_t r
+    int64_t *b,
+    int64_t *a,
+    int64_t n,
+    int64_t r
 );
 
 #endif /* poly_h */

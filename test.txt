@@ -1,13 +1,13 @@
 /*
  test poly_div
 */
-int16_t a[N],b[N],q[N],r[N];
-memset(a, 0, N * sizeof(int16_t));
-memset(b, 0, N * sizeof(int16_t));
+int64_t a[N],b[N],q[N],r[N];
+memset(a, 0, N * sizeof(int64_t));
+memset(b, 0, N * sizeof(int64_t));
 a[4] = 1; a[3] = -3; a[2] = 2; a[1] = 4; a[0] = -1;
 b[2] = 1; b[1] = -2; b[0] = 3;
-uint16_t a_deg = 4;
-uint16_t b_deg = 2;
+uint64_t a_deg = 4;
+uint64_t b_deg = 2;
 
 
 poly_div(5,a,b,q,r,a_deg,b_deg);
@@ -20,11 +20,11 @@ display(r);
 
  clock_t start,finish;
  double total_time;
- int16_t a[N],b[N],c[N],t[N];
- memset(a, 0, N * sizeof(int16_t));
- memset(b, 0, N * sizeof(int16_t));
- memset(c, 0, N * sizeof(int16_t));
- memset(t, 0, N * sizeof(int16_t));
+ int64_t a[N],b[N],c[N],t[N];
+ memset(a, 0, N * sizeof(int64_t));
+ memset(b, 0, N * sizeof(int64_t));
+ memset(c, 0, N * sizeof(int64_t));
+ memset(t, 0, N * sizeof(int64_t));
 
  srand(time(0));
  gen_rand_poly(a,50,100);
@@ -52,9 +52,9 @@ display(r);
  
  
  /* test poly_EEA */
-     int16_t a[N],b[N],s[N],t[N],d[N];
-    memset(a,0,N*sizeof(int16_t));
-    memset(b,0,N*sizeof(int16_t));
+     int64_t a[N],b[N],s[N],t[N],d[N];
+    memset(a,0,N*sizeof(int64_t));
+    memset(b,0,N*sizeof(int64_t));
     a[0] = 5; a[1] = 1; a[2] = 2; a[6] = 3;
     b[0] = 4; b[1] = 2; b[3] = 1; b[4] = 6;
     printf("compute the gcd of \n");
@@ -71,9 +71,9 @@ display(r);
     
     
 /* test bin_poly_div */
-    int16_t a[N], b[N], q[N], r[N];
-    memset(a, 0, sizeof(int16_t)*N);
-    memset(b, 0, sizeof(int16_t)*N);
+    int64_t a[N], b[N], q[N], r[N];
+    memset(a, 0, sizeof(int64_t)*N);
+    memset(b, 0, sizeof(int64_t)*N);
     a[7] = a[5] = a[2] = a[1] = a[0] = b[3] = b[1] = b[0] = 1;
     bin_poly_div(a, b, q, r, 7, 3);
     display(q);
@@ -92,8 +92,8 @@ display(r);
     gcd is
     [  1  ] of degree 0
  */
-        int16_t a[N], b[N], q[N], r[N];
-    memset(a, 0, sizeof(int16_t)*N);
+        int64_t a[N], b[N], q[N], r[N];
+    memset(a, 0, sizeof(int64_t)*N);
     a[2] = 1;
     printf("find the inv of \n");
     display(a);
@@ -103,9 +103,9 @@ display(r);
     if(quotient_ring_inv(b,a,2,3)) display(b);
     else printf("not invertible");
 
-    int16_t a[N], b[N], s[N], t[N],d[N];
-    memset(a, 0, sizeof(int16_t)*N);
-    memset(b, 0, sizeof(int16_t)*N);
+    int64_t a[N], b[N], s[N], t[N],d[N];
+    memset(a, 0, sizeof(int64_t)*N);
+    memset(b, 0, sizeof(int64_t)*N);
 
     a[3] = a[2] = a[0] = 1;
     b[8] = b[0] =1; 
@@ -143,10 +143,10 @@ gcd is
 ===========================
 test quotient_ring_inv
 
-    int16_t a[N], b[N], s[N], t[N],d[N];
-    memset(a, 0, sizeof(int16_t)*N);
-    memset(b, 0, sizeof(int16_t)*N);
-    int16_t p = 2;
+    int64_t a[N], b[N], s[N], t[N],d[N];
+    memset(a, 0, sizeof(int64_t)*N);
+    memset(b, 0, sizeof(int64_t)*N);
+    int64_t p = 2;
 
     //a[4] = 1; a[3] = 3; a[1] = 2; a[0] = 4; 
     a[3] = a[2] = a[0] = 1;
@@ -165,10 +165,10 @@ is
 11 + 11x + 14x^2
 
 
-int16_t a[N],b[N],c[N];
-    memset(a,0,sizeof(int16_t)*N);
-    memset(b,0,sizeof(int16_t)*N);
-    for(int16_t i=1; i<=3; i++){
+int64_t a[N],b[N],c[N];
+    memset(a,0,sizeof(int64_t)*N);
+    memset(b,0,sizeof(int64_t)*N);
+    for(int64_t i=1; i<=3; i++){
         a[i-1] = i;
         b[i-1] = 4 - i;
     }
@@ -188,15 +188,15 @@ c is
 [  11  11  14  ] of degree 2
 
 /* test bytes */
-    int16_t h[N];
-    memset(h, 0, N*sizeof(int16_t));
+    int64_t h[N];
+    memset(h, 0, N*sizeof(int64_t));
     gen_rand_poly(h, 20, 1000);
     display(h);
     unsigned char s[BYTESLEN];
     //printf("start\n");
     poly2bytes(s, h);
     //displaybits(s);
-    memset(h, 0, N*sizeof(int16_t));
+    memset(h, 0, N*sizeof(int64_t));
     bytes2poly(h, s);
     display(h);
     //displaybits(s);
