@@ -1,0 +1,3 @@
+# COLA
+make simple
+./test
