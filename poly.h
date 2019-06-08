@@ -19,12 +19,18 @@ trinary_poly_gen(
 
 void gen_rand_poly(int64_t *f,int64_t f_deg, int64_t num);
 
+/**
+ * 返回多项式的次数
+ */
 int64_t dg(const int64_t  *f);
 
 int64_t display(const int64_t  *f);
 
 void poly_assign(int64_t *y, int64_t *x);
 
+/**
+ * 多项式扩展的欧几里得算法
+ */
 int64_t  EEA(
   int64_t a,
   int64_t b,
