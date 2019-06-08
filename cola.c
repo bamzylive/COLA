@@ -82,8 +82,8 @@ void cola_decaps(
 {
     int i;
     int64_t d[N];
-    memset(d, 0, sizeof(N));
-    memset(r, 0, sizeof(N));
+    memset(d, 0, sizeof(d));
+    memset(r, 0, sizeof(int64_t)*N);
 
     cyc_convolution(d,f,c,N_DEG);
     entrywise_mod_p(d, Q);
