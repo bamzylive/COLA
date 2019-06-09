@@ -12,7 +12,7 @@ binary_poly_gen(int64_t  *f);
   生成三值多项式
   T(d+1,d)
 */
-void
+uint64_t
 trinary_poly_gen(
           int64_t  *f,
     const uint64_t  d);
@@ -23,6 +23,8 @@ void gen_rand_poly(int64_t *f,int64_t f_deg, int64_t num);
  * 返回多项式的次数
  */
 int64_t dg(const int64_t  *f);
+
+int poly_compare(int64_t *s1, int64_t *s2);
 
 int64_t display(const int64_t  *f);
 

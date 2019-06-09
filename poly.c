@@ -24,7 +24,7 @@ void binary_poly_gen(int64_t *f)
     }
 }
 
-void trinary_poly_gen(
+uint64_t trinary_poly_gen(
     int64_t *f,
     const uint64_t d)
 {
@@ -72,7 +72,7 @@ void trinary_poly_gen(
             }
         }
     }
-    return;
+    return r;
 }
 
 void gen_rand_poly(int64_t *f, int64_t f_deg, int64_t num)
@@ -91,6 +91,22 @@ int64_t dg(const int64_t *f)
             break;
         }
     return degree;
+}
+
+int poly_compare(int64_t *s1, int64_t *s2)
+{
+    int flag = 1;
+    for(int i=0; i<N; i++){
+            if(s1[i]!=s2[i]){
+                printf("Difference occurs first at position %d.\n",i);
+                printf("former is %lld\n",s1[i]);
+                printf("latter is %lld\n",s2[i]);
+                flag = 0;
+                break;
+            }
+        }
+        if(flag) printf("Same polynomial!\n");
+        return flag;
 }
 
 int64_t display(const int64_t *f)

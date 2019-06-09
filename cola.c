@@ -10,13 +10,13 @@
 #include "fips202.h"
 #include "api.h"
 
-void cola_keygen(
+uint64_t cola_keygen(
     int64_t *h,
     int64_t *f
 )
 {
     
-
+    uint64_t nounce;
     int64_t g[N], f_inv[N];
     memset( f_inv, 0, N*sizeof(int64_t) );
     memset( h, 0, N*sizeof(int64_t));
@@ -24,7 +24,7 @@ void cola_keygen(
     srand(time(NULL));
 
     trinary_poly_gen(g,TRI_d);
-    trinary_poly_gen(f,TRI_d);
+    nounce=trinary_poly_gen(f,TRI_d);
     
     g[0] += Q / 2;
     int cnt = 20;
@@ -36,6 +36,7 @@ void cola_keygen(
     printf("The degree of public key h is of %lld\n", dg(h));
    /* if (dg(h)!=-1) printf("pk is OK.\n");
     else printf("pk is ZERO.\n"); */
+    return nounce;
 }
 
 void cola_encaps(
@@ -63,7 +64,7 @@ void cola_encaps(
     poly2bytes(str2hash+2*BYTESLEN, c);
     shake256(k, 256, str2hash, 3*BYTESLEN);
 }
-
+/* 
 int pke_enc(
     unsigned char *pk,
     unsigned char *m, 
@@ -71,10 +72,8 @@ int pke_enc(
     unsigned char *c, 
     unsigned long long *clen)
 {
-    pk 10 bit 10 bit 10 10  = 8 bytes
-    h 
 }
-
+ */
 void cola_enc(
     const int64_t *h, 
     int64_t *c,
@@ -151,24 +150,68 @@ void cola_decaps(
 }
 
 int main(){
+    FILE *fpt;
+    fpt = fopen("/Users/xty/Desktop/COLA/info.dat","wb+");
+    uint64_t nounce;
+
+    uint32_t arr[7]={735,147,80,80,80,80,8}; 
+    //公钥长度, 私钥长度, 明文1长度, 明文2长度, 密文1长度, 密文2长度, 随机数长度
+    fwrite(arr, sizeof(arr), 1, fpt);
+
     int64_t h[N], f[N], c[N], r1[N], r2[N], diff[N];
-    int64_t m[N], s1[N], s2[N], c2[N]; 
+    int64_t m[N], m1[N], s1[N], s2[N], c2[N]; 
+    unsigned char byte_m[74];
+    unsigned char byte_m1[74];
+    unsigned char b[735];
+    unsigned char bb[147];
+
+    memset(b,0,sizeof(b));
+    memset(bb,0,sizeof(bb));
+    memset(byte_m,0,sizeof(byte_m));
+
+    int64_t h2[N],f2[N];
+
     int i,flag;
     flag = 1;
     binary_poly_gen(m);
+    binary2byteArray(m,byte_m);
+    binary_poly_gen(m1);
+    poly_compare(m,m1);
+
+    //byteArray2binary(byte_m,m1);
+    //poly_compare(m,m1);
+
+    return 0;
 
     unsigned char k1[256+1], k2[256+1];
 
     clock_t start,finish;
     double total_time;
-    int loop = 3;
+    int loop = 1;
      
     start=clock();
     printf("所选的多项式环为: Z_1024[X] / X^%d - 1\n",N_DEG);
     for(int t=0; t<loop; t++){
 
     
-        cola_keygen(h, f); 
+        nounce = cola_keygen(h, f); 
+        //接下来写入公钥和私钥, 先转成字节数组
+        ZqArray2byteArray(h,b);
+        fwrite(b,sizeof(b), 1, fpt);
+        trinary2byteArray(f,bb);
+        fwrite(bb,sizeof(bb),1,fpt);
+
+       /*  
+        byteArray2trinary(bb,f2);
+        poly_compare(f,f2);
+        */ 
+       /* 
+        byteArray2ZqArray(b,h2);
+        poly_compare(h,h2); */
+
+
+
+        /* 
         cola_enc(h,c,c2,s1,m);
         cola_dec(c,c2,h,f,s2,m);
         for(i=0; i<N; i++){
@@ -179,7 +222,8 @@ int main(){
             }
         }
         if(flag) printf("Successful decryption!\n");
-        //printf("still here?\n");
+        */
+
         /*
         cola_encaps(h, c, r1, k1);
         cola_decaps(c, r2, h, f, k2);

@@ -7,7 +7,7 @@
 
 
 
-void cola_keygen(
+uint64_t cola_keygen(
     int64_t *h,
     int64_t *f
 );
