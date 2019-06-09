@@ -37,6 +37,9 @@ int64_t  EEA(
   int64_t* ps,
   int64_t* pt);
 
+/**
+ * 求 数mod p 的 逆
+ */
 int64_t num_inv(int64_t lc, int64_t p);
 
 /*

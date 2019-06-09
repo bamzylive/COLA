@@ -8,6 +8,7 @@
 #include "byte.h"
 #include "params.h"
 #include "fips202.h"
+#include "api.h"
 
 void cola_keygen(
     int64_t *h,
@@ -61,6 +62,17 @@ void cola_encaps(
     poly2bytes(str2hash+BYTESLEN, r);
     poly2bytes(str2hash+2*BYTESLEN, c);
     shake256(k, 256, str2hash, 3*BYTESLEN);
+}
+
+int pke_enc(
+    unsigned char *pk,
+    unsigned char *m, 
+    unsigned long long mlen,
+    unsigned char *c, 
+    unsigned long long *clen)
+{
+    pk 10 bit 10 bit 10 10  = 8 bytes
+    h 
 }
 
 void cola_enc(
