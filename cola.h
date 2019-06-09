@@ -32,8 +32,7 @@ void cola_enc(
     int64_t *c,
     int64_t *c2,
     int64_t *r, // 用来对比恢复前和恢复后 秘密多项式 是否一致
-    int64_t *m
-);
+    int64_t *m);
 
 void cola_dec(
     const int64_t *c,

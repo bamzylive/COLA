@@ -79,8 +79,7 @@ void cola_enc(
     int64_t *c,
     int64_t *c2,
     int64_t *r, // 用来对比恢复前和恢复后 秘密多项式 是否一致
-    int64_t *m
-)
+    int64_t *m)
 {
     int i;
     int64_t e[N];
@@ -152,36 +151,29 @@ void cola_decaps(
 int main(){
     FILE *fpt;
     fpt = fopen("/Users/xty/Desktop/COLA/info.dat","wb+");
-    uint64_t nounce;
+    int64_t nounce[N];
 
-    uint32_t arr[7]={735,147,80,80,80,80,8}; 
+    uint32_t arr[7]={735,147,74,74,74,74,74}; 
     //公钥长度, 私钥长度, 明文1长度, 明文2长度, 密文1长度, 密文2长度, 随机数长度
     fwrite(arr, sizeof(arr), 1, fpt);
 
     int64_t h[N], f[N], c[N], r1[N], r2[N], diff[N];
     int64_t m[N], m1[N], s1[N], s2[N], c2[N]; 
-    unsigned char byte_m[74];
-    unsigned char byte_m1[74];
+    unsigned char byte_enc_m[74];
+    unsigned char byte_dec_m[74];
+    unsigned char byte_enc_c[735];
+    unsigned char byte_enc_c2[74];
+    unsigned char byte_nounce[74];
+    //unsigned char byte_dec_c[735];
     unsigned char b[735];
     unsigned char bb[147];
 
-    memset(b,0,sizeof(b));
-    memset(bb,0,sizeof(bb));
-    memset(byte_m,0,sizeof(byte_m));
-
+    
     int64_t h2[N],f2[N];
 
     int i,flag;
     flag = 1;
-    binary_poly_gen(m);
-    binary2byteArray(m,byte_m);
-    binary_poly_gen(m1);
-    poly_compare(m,m1);
-
-    //byteArray2binary(byte_m,m1);
-    //poly_compare(m,m1);
-
-    return 0;
+    
 
     unsigned char k1[256+1], k2[256+1];
 
@@ -194,35 +186,37 @@ int main(){
     for(int t=0; t<loop; t++){
 
     
-        nounce = cola_keygen(h, f); 
+        cola_keygen(h, f); 
         //接下来写入公钥和私钥, 先转成字节数组
         ZqArray2byteArray(h,b);
-        fwrite(b,sizeof(b), 1, fpt);
+        fwrite(b,sizeof(b), 1, fpt); //写公钥字节数组
         trinary2byteArray(f,bb);
-        fwrite(bb,sizeof(bb),1,fpt);
-
-       /*  
-        byteArray2trinary(bb,f2);
-        poly_compare(f,f2);
-        */ 
-       /* 
-        byteArray2ZqArray(b,h2);
-        poly_compare(h,h2); */
+        fwrite(bb,sizeof(bb),1,fpt); //写私钥字节数组
 
 
 
-        /* 
-        cola_enc(h,c,c2,s1,m);
-        cola_dec(c,c2,h,f,s2,m);
-        for(i=0; i<N; i++){
-            if(s1[i]!=s2[i]){
-                printf("failed decryption at position %d.\n",i);
-                flag = 0;
-                break;
-            }
-        }
-        if(flag) printf("Successful decryption!\n");
-        */
+        binary_poly_gen(m);
+        cola_enc(h,c,c2,s1,m); //加密明文m
+        cola_dec(c,c2,h,f,s2,m1); //解密得到明文m1
+       
+        binary2byteArray(m,byte_enc_m);
+        fwrite(byte_enc_m,sizeof(byte_enc_m),1,fpt); //写明文1(加密测试)字节数组
+        fwrite(byte_dec_m,sizeof(byte_dec_m),1,fpt); //写明文2(解密测试)字节数组
+
+        ZqArray2byteArray(c,byte_enc_c);
+        binary2byteArray(c2,byte_enc_c2);
+        fwrite(byte_enc_c,sizeof(byte_enc_c),1,fpt);
+        fwrite(byte_enc_c2,sizeof(byte_enc_c2),1,fpt); //写密文1(解密测试)字节数组
+        fwrite(byte_enc_c,sizeof(byte_enc_c),1,fpt);
+        fwrite(byte_enc_c2,sizeof(byte_enc_c2),1,fpt); //写密文2(解密测试)字节数组
+
+                                                        //这两者不是一致的吗?
+                                                        
+        binary2byteArray(s1,byte_nounce);
+        fwrite(byte_nounce,sizeof(byte_nounce),1,fpt);
+        fclose(fpt);
+
+        
 
         /*
         cola_encaps(h, c, r1, k1);

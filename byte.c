@@ -4,8 +4,6 @@
 #include "params.h"
 
 // 588 个分量(最高分量为0), 需要735个字节, 每5个字节 确定 4个系数
-
-//588 个分量, 每个分量占2比特表示{-1,0,1}时, 每 4个系数, 占一个字节, 所以 588/4=147个字节
 void ZqArray2byteArray(const int64_t *aa, unsigned char *b)
 {
     u_int16_t a[N];
@@ -67,8 +65,11 @@ void byteArray2ZqArray(const unsigned char *b, int64_t *aa)
     }
    
     for(int i=0; i<N; i++) aa[i] = a[i];
-    }
+}
 
+
+
+//588 个分量, 每个分量占2比特表示{-1,0,1}时, 每 4个系数, 占一个字节, 所以 588/4=147个字节
 void trinary2byteArray(const int64_t *f, unsigned char *b)
 {
     int i, kuai;
