@@ -77,14 +77,16 @@ uint64_t trinary_poly_gen(
 
 void gen_rand_poly(int64_t *f, int64_t f_deg, int64_t num)
 {
-    for (int i = 0; i <= f_deg; i++)
+    int i;
+    for (i = 0; i <= f_deg; i++)
         f[i] = (rand()) % num;
 }
 
 int64_t dg(const int64_t *f)
 {
     int64_t degree = -1; // -1 represents zero polynomial
-    for (int i = N - 1; i > -1; i--)
+    int i;
+    for (i = N - 1; i > -1; i--)
         if (f[i] != 0)
         {
             degree = i;
@@ -96,7 +98,8 @@ int64_t dg(const int64_t *f)
 int poly_compare(int64_t *s1, int64_t *s2)
 {
     int flag = 1;
-    for(int i=0; i<N; i++){
+    int i;
+    for(i=0; i<N; i++){
             if(s1[i]!=s2[i]){
                 printf("Difference occurs first at position %d.\n",i);
                 printf("former is %lld\n",s1[i]);
@@ -132,8 +135,8 @@ int64_t display(const int64_t *f)
 /* non-zero poly assignment */
 void poly_assign(int64_t *y, int64_t *x)
 {
-
-    for (int i = 0; i < N; i++)
+    int i;
+    for (i = 0; i < N; i++)
     {
         y[i] = x[i];
     }
@@ -374,7 +377,8 @@ void karatsuba(
 
     int64_t dd[N];
     memset(dd, 0, N * sizeof(int64_t));
-    for (int i = 0; i < n; i++)
+    int i;
+    for (i = 0; i < n; i++)
     {
         dd[i] = a[i] * b[i];
     }
@@ -405,7 +409,8 @@ void karatsuba(
 
 void poly_minus(int64_t *c, int64_t *a, int64_t *b)
 {
-    for (int i = 0; i < N; i++)
+    int i;
+    for (i = 0; i < N; i++)
     {
         c[i] = a[i] - b[i];
     }
@@ -413,14 +418,15 @@ void poly_minus(int64_t *c, int64_t *a, int64_t *b)
 
 void entrywise_mod_p(int64_t *c, int64_t p)
 {
+    int i;
     // if (p == 0) return;
     if (p == 2)
     {
-        for (int i = 0; i <= dg(c); i++)
+        for (i = 0; i <= dg(c); i++)
             c[i] &= 1;
         return;
     }
-    for (int i = 0; i <= dg(c); i++)
+    for (i = 0; i <= dg(c); i++)
     {
         c[i] = c[i] % p;
         if (c[i] < 0)
@@ -430,7 +436,8 @@ void entrywise_mod_p(int64_t *c, int64_t p)
 
 void central_mod_p(int64_t *c, int64_t p)
 {
-    for (int i = 0; i <= dg(c); i++)
+    int i;
+    for (i = 0; i <= dg(c); i++)
     {
         if (c[i] >= (p >> 1))
         {
@@ -541,7 +548,8 @@ int quotient_ring_inv(
     // printf("Whether monimial\n");
     // (monimial) if a = c_k X^k, then its INV is c_k^(-1) X^(n-k)
     sum = 0;
-    for (int i = 0; i < a_deg; i++)
+    int i;
+    for (i = 0; i < a_deg; i++)
     {
         sum += a[i];
         if (sum != 0)
@@ -584,7 +592,7 @@ int quotient_ring_inv(
         // entrywise_mod_p(prod, p);
         // display(prod);
         int64_t gcd_inv = num_inv(gcd[0], p);
-        for (int i = 0; i < N; i++)
+        for (i = 0; i < N; i++)
             a_inv[i] = gcd_inv * u[i] % p;
         //printf("here and now\n");
         return 1;

@@ -97,7 +97,6 @@ void cola_enc(
 void cola_dec(
     const int64_t *c,
     const int64_t *c2,
-    const int64_t *h,
     const int64_t *f,
     int64_t *r,
     int64_t *m
@@ -148,6 +147,81 @@ void cola_decaps(
     shake256(k, 256, str2hash, 3*BYTESLEN);
 }
 
+
+int pke_keygen(
+    unsigned char *pk, 
+    unsigned char *sk)
+{
+    int64_t f[N], h[N];
+    memset(f,0,sizeof(f));
+    memset(h,0,sizeof(h));
+    cola_keygen(h,f);
+    return 0;
+}
+
+int pke_enc(
+    unsigned char *pk,
+    unsigned char *m, 
+    unsigned long long mlen, //74
+    unsigned char *c, 
+    unsigned long long clen)   // clen = 735 + 74
+{
+    int64_t h[N],message[N], r[N], c1[N], c2[N];
+    unsigned char byte_c1[735];
+    unsigned char byte_c2[74];
+
+    byteArray2ZqArray(pk,h);
+    byteArray2binary(m,message);
+    //735+74
+
+    cola_enc(h,c1,c2,r,message);
+    ZqArray2byteArray(c1,byte_c1);
+    binary2byteArray(c2,byte_c2);   
+
+    unsigned long long i; 
+
+    for(i=0; i<735; i++)
+    {
+        c[i] = byte_c1[i];
+    }
+    for(i=735; i<clen; i++)
+    {
+        c[i-735] = byte_c2[i];
+    }
+    return 0;
+}
+
+int pke_dec(
+    unsigned char *sk,
+    unsigned char *c, 
+    unsigned long long clen,
+    unsigned char *m, 
+    unsigned long long mlen)
+{
+    int64_t f[N],c1[N],c2[N],message[N],r[N];
+    byteArray2trinary(sk,f);
+    unsigned char byte_c1[735];
+    unsigned char byte_c2[74];
+    int i;
+    for(i=0; i<735; i++)
+    {
+        byte_c1[i] = c[i];
+    }
+    for(i=0; i<74; i++)
+    {
+        byte_c2[i] = c[735+i];
+    }
+    byteArray2ZqArray(byte_c1,c1);
+    byteArray2binary(byte_c2,c2);
+    cola_dec(c1,c2,f,r,message);
+    binary2byteArray(message,m);
+
+    return 0;
+
+}
+
+
+
 int main(){
     FILE *fpt;
     fpt = fopen("/Users/xty/Desktop/COLA/info.dat","wb+");
@@ -183,7 +257,8 @@ int main(){
      
     start=clock();
     printf("所选的多项式环为: Z_1024[X] / X^%d - 1\n",N_DEG);
-    for(int t=0; t<loop; t++){
+    int t;
+    for(t=0; t<loop; t++){
 
     
         cola_keygen(h, f); 
@@ -197,7 +272,10 @@ int main(){
 
         binary_poly_gen(m);
         cola_enc(h,c,c2,s1,m); //加密明文m
-        cola_dec(c,c2,h,f,s2,m1); //解密得到明文m1
+        cola_dec(c,c2,f,s2,m1); //解密得到明文m1
+        poly_compare(m,m1);
+        return 0;
+
        
         binary2byteArray(m,byte_enc_m);
         fwrite(byte_enc_m,sizeof(byte_enc_m),1,fpt); //写明文1(加密测试)字节数组

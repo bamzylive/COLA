@@ -37,7 +37,6 @@ void cola_enc(
 void cola_dec(
     const int64_t *c,
     const int64_t *c2,
-    const int64_t *h,
     const int64_t *f,
     int64_t *s,
     int64_t *m

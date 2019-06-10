@@ -47,7 +47,7 @@ void byteArray2ZqArray(const unsigned char *b, int64_t *aa)
     int i,kuai;
     u_int16_t duo=0;
     // 每 5个字节 还原 4个系数 734
-    for(int i=0; i<735; i=i+5)
+    for(i=0; i<735; i=i+5)
     {
         kuai = i/5;
         //4*kuai + j
@@ -64,7 +64,7 @@ void byteArray2ZqArray(const unsigned char *b, int64_t *aa)
         a[4*kuai+3] = duo + ( b[i+4]<<2 );
     }
    
-    for(int i=0; i<N; i++) aa[i] = a[i];
+    for(i=0; i<N; i++) aa[i] = a[i];
 }
 
 
@@ -96,7 +96,8 @@ void byteArray2trinary(unsigned char *b, int64_t *f)
 {
     memset(f,0,sizeof(int64_t)*N);
     unsigned char temp;
-    for(int i=0; i<147; i++)
+    int i;
+    for(i=0; i<147; i++)
     {
         temp = b[i];
         for(int j=0; j<4; j++){
@@ -115,7 +116,8 @@ void binary2byteArray(const int64_t *m, unsigned char *b)
     } */
     //printf("\n");
     uint16_t temp;
-    for(int i=0; i<73; i++)
+    int i;
+    for(i=0; i<73; i++)
     {   temp=0;
         for(int j=0; j<8; j++)
         {
@@ -135,7 +137,8 @@ void byteArray2binary(const unsigned char *b, int64_t *m)
     m[585] = (b[73]>>1)&1;
     m[584] = (b[73]&1);
     unsigned char temp;
-    for(int i=0; i<73; i++)
+    int i;
+    for(i=0; i<73; i++)
     {
         temp = b[i];
         for(int j=0; j<8; j++)
@@ -144,17 +147,14 @@ void byteArray2binary(const unsigned char *b, int64_t *m)
             temp =( temp>>1);
         }
     }
-    /* for(int i=0; i<8; i++)
-    {
-        printf("%lld\t",m[i]);
-    } */
-    //printf("\n");
+    
 }
 
 void poly2bytes(unsigned char *b, const int64_t * f) {
     memset(b, 0, BYTESLEN);
     int64_t spacebias = 0, spaceleft = 8, inputleft, copylen;
-    for (int i = 0, j = 0; i < N; i++) {
+    int i,j;
+    for (i = 0, j = 0; i < N; i++) {
         //printf("copying the no.%d integer\n", i);
         inputleft = 10;
         while (inputleft) {
@@ -182,7 +182,8 @@ void printbits(int64_t l, int64_t c) {
 void bytes2poly(int64_t *f, const unsigned char *b) {
     memset(f, 0, N*sizeof(int64_t));
     int64_t spacebias = 0, spaceleft = 10, inputleft, copylen;
-    for (int i = 0, j = 0; i < BYTESLEN; i++) {
+    int i,j;
+    for (i = 0, j = 0; i < BYTESLEN; i++) {
         //printf("\ncopying the no.%d byte\n", i);
         inputleft = 8;
         while (inputleft) {
@@ -206,7 +207,8 @@ void bytes2poly(int64_t *f, const unsigned char *b) {
 }
 
 void displaybits(unsigned char *b) {
-    for (int i = 0; i < BYTESLEN; i++) {
+    int i;
+    for ( i = 0; i < BYTESLEN; i++ ) {
         for (int j = 0; j < 8; j++)
             printf("%d", (b[i]&(1<<j)) >> j);
         printf("  ");
@@ -215,7 +217,8 @@ void displaybits(unsigned char *b) {
 }
 
 void display10bits(int64_t *f) {
-    for (int i = 0; i < N; i++) {
+    int i;
+    for ( i = 0; i < N; i++ ) {
         for (int j = 0; j < 10; j++)
             printf("%lld", (f[i]&(1<<j)) >> j);
         printf("  ");
